@@ -24,13 +24,13 @@ public class ListCarService {
 
     public ResponseEntity<?> insertTypeCar(ListCarDTO data){
         try {
-            Catalogo_Autos auto = listRepository.findBytipoAuto(data.getTipo_auto_id());
+            Catalogo_Autos auto = listRepository.findBytipoAuto(data.getTipo_auto());
             if (auto != null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                                      .body("{\"error\": \"el tipo de auto ya está registrado\",\"success\": false}");
             }
             Catalogo_Autos catalogo = new Catalogo_Autos();
-            catalogo.setTipoAuto(data.getTipo_auto_id());
+            catalogo.setTipoAuto(data.getTipo_auto());
             listRepository.save(catalogo);
             return ResponseEntity.status(HttpStatus.CREATED).body("{\"success\": true}");
         } catch (Exception  e) {

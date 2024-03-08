@@ -18,18 +18,18 @@ public class CarDTO {
     }
 
 
-    public Long getTipo_auto() {
-        return tipo_auto;
-    }
-
-
-    public void setTipo_auto(Long tipo_auto) {
-        this.tipo_auto = tipo_auto;
-    }
-
-
     @NonNull
-    private Long tipo_auto;
+    private Long tipo_auto_id;
+
+
+    public Long getTipo_auto_id() {
+        return tipo_auto_id;
+    }
+
+
+    public void setTipo_auto_id(Long tipo_auto_id) {
+        this.tipo_auto_id = tipo_auto_id;
+    }
    
    
 }

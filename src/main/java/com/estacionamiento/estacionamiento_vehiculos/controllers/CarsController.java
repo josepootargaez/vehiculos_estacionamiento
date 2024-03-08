@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.estacionamiento.estacionamiento_vehiculos.dto.CarDTO;
-import com.estacionamiento.estacionamiento_vehiculos.models.Autos;
 import com.estacionamiento.estacionamiento_vehiculos.services.CarService;
 
 import org.springframework.beans.factory.annotation.Autowired;

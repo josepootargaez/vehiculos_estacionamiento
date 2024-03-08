@@ -35,5 +35,8 @@ public class Autos {
     public String getTipoAuto() {
         return catalogoAutos.getTipoAuto();
     }
+    public Long getCatalogId() {
+        return catalogoAutos.getId();
+    }
     
 }

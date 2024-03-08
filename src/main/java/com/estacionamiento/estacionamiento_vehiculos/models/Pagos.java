@@ -10,12 +10,12 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Pagos {
     
-    private Integer minutos;
-    public Integer getMinutos() {
+    private Long minutos;
+    public Long getMinutos() {
         return minutos;
     }
 
-    public void setMinutos(Integer minutos) {
+    public void setMinutos(Long minutos) {
         this.minutos = minutos;
     }
 
@@ -42,4 +42,24 @@ public class Pagos {
     public void setEstancia(Estancia estancia) {
         this.estancia = estancia;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "tipo_vehiculo_id") // Nombre de la columna que será la clave foránea
+    private Catalogo_Autos tipo_vehiculo;
+    public void setTipo_vehiculo(Catalogo_Autos tipo_vehiculo) {
+        this.tipo_vehiculo = tipo_vehiculo;
+    }
+
+    public Long getIdEstancia(){
+        return estancia.getId();
+    }
+
+    public Long getIdAuto(){
+        return estancia.getIdAuto();
+    }
+    
+    public String getTipoAuto(){
+        return tipo_vehiculo.getTipoAuto();
+    }
+ 
 }

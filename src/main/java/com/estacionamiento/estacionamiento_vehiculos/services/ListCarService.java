@@ -1,6 +1,9 @@
 package com.estacionamiento.estacionamiento_vehiculos.services;
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -38,6 +41,19 @@ public class ListCarService {
             return ResponseEntity .status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"success\": false, \"error\": \"" + e.getMessage() + "\"}");
         }
         
+    }
+
+    @EventListener
+    public void inicializarCatalogo(ApplicationReadyEvent event) {
+        if (listRepository.count() == 0) {
+            String[] list ={"oficial","residente","no residente"};
+            Arrays.stream(list).forEach(tipo ->{
+                Catalogo_Autos catalogo = new Catalogo_Autos();
+                catalogo.setTipoAuto(tipo);
+                listRepository.save(catalogo);
+
+            });
+        }
     }
     
 }

@@ -19,16 +19,16 @@ public class CarDTO {
 
 
     @NonNull
-    private Long tipo_auto_id;
+    private Long catalogo_auto_id;
 
 
-    public Long getTipo_auto_id() {
-        return tipo_auto_id;
+    public Long getCatalogo_auto_id() {
+        return catalogo_auto_id;
     }
 
 
-    public void setTipo_auto_id(Long tipo_auto_id) {
-        this.tipo_auto_id = tipo_auto_id;
+    public void setCatalogo_auto_id(Long catalogo_auto_id) {
+        this.catalogo_auto_id = catalogo_auto_id;
     }
    
    

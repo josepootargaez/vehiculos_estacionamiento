@@ -2,7 +2,9 @@ package com.estacionamiento.estacionamiento_vehiculos.services;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -83,7 +85,7 @@ public class StayService {
             Duration duration = Duration.between(estancia.getFecha_entrada(), estancia.getFecha_salida());
             long duracionEnMinutos = duration.toMinutes();
             double precio=0;
-            if(tipoAuto != "oficial"){
+            if (!tipoAuto.equals("oficial")) {
                 precio = duracionEnMinutos * 0.5;
             }
             payment.setMinutos(duracionEnMinutos);
@@ -91,7 +93,12 @@ public class StayService {
             payment.setEstancia(estancia);
             payment.setTipo_vehiculo(catalogo);
             payRepository.save(payment);
-            return ResponseEntity.status(HttpStatus.CREATED).body("{\"success\": true}");
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("success", true);
+            if (tipoAuto.equals("no residente")) {
+                responseBody.put("data", payment);
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
         } catch (Exception  e) {
             System.err.println("Error al insertar el auto: " + e.getMessage());
             return ResponseEntity .status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"success\": false, \"error\": \"" + e.getMessage() + "\"}");

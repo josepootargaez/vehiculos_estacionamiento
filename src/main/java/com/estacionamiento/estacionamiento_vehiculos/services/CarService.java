@@ -31,7 +31,7 @@ public class CarService {
     }
     public ResponseEntity<?> insertCar(CarDTO carDTO){
         try {
-            Long idList = carDTO.getTipo_auto_id() != null ? carDTO.getTipo_auto_id() : 1; 
+            Long idList = carDTO.getCatalogo_auto_id() != null ? carDTO.getCatalogo_auto_id() : 0; 
             Catalogo_Autos list = listCarRepository.findById(idList)
             .orElseThrow(() ->  new IllegalArgumentException("No se encontró el catálogo de autos con el ID proporcionado"));
              Autos autoExistente = carRepository.findByplaca(carDTO.getPlaca_auto());

@@ -2,12 +2,10 @@ package com.estacionamiento.estacionamiento_vehiculos.services;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -157,34 +155,35 @@ public class StayService {
     }
 
     public ResponseEntity<?> startMonth() {
-        LocalDateTime now = LocalDateTime.now();
-        String mesActualStr = now.format(DateTimeFormatter.ofPattern("MM"));
-        int mesActual = Integer.parseInt(mesActualStr);
         List<Estancia> estancias = stayRepository.findAll();
-        List<Estancia> estanciasMesActual = estancias.stream()
-        .filter(estancia -> estancia.getFecha_entrada().getMonthValue() == mesActual)
-        .collect(Collectors.toList());
-        
-        estanciasMesActual.stream().forEach(estancia -> {
-            Long idAuto = estancia.getIdAuto() != null ? estancia.getIdAuto() : 0;
-            Autos auto = carRepository.findById(idAuto)
-                    .orElseThrow(() -> new IllegalArgumentException("No se encontró el auto"));
-            Long idCatalogo = auto.getCatalogId() != null ? auto.getCatalogId() : 0;
-            Catalogo_Autos catalogo = listRepository.findById(idCatalogo)
-                    .orElseThrow(() -> new IllegalArgumentException("No se encontró el tipo de auto"));
-            if (catalogo != null) {
-                Long idEstancia = estancia.getId() != null ? estancia.getId() : 0;
-                Pagos pago = payRepository.findByEstanciaId(idEstancia);
-                Long idPago = pago.getId() != null ? pago.getId() : 0;
-        
-                if (catalogo.getTipoAuto().equals("oficial")) {
-                    payRepository.deleteById(idPago);
-                    stayRepository.deleteById(idEstancia);
-                } else if (catalogo.getTipoAuto().equals("residente")) {
-                    pago.setMinutos((long) 0);
-                    payRepository.save(pago);
+        estancias.stream().forEach(estancia -> {
+            try {
+                Long idAuto = estancia.getIdAuto() != null ? estancia.getIdAuto() : 0;
+                Autos auto = carRepository.findById(idAuto)
+                        .orElseThrow(() -> new IllegalArgumentException("No se encontró el auto"));
+                Long idCatalogo = auto.getCatalogId() != null ? auto.getCatalogId() : 0;
+                Catalogo_Autos catalogo = listRepository.findById(idCatalogo)
+                        .orElseThrow(() -> new IllegalArgumentException("No se encontró el tipo de auto"));
+                if (catalogo != null) {
+                    Long idEstancia = estancia.getId() != null ? estancia.getId() : 0;
+                    Pagos pago = payRepository.findByEstanciaId(idEstancia);
+                    if(pago !=null){
+                        Long idPago = pago.getId() != null ? pago.getId() : 0;
+            
+                        if (catalogo.getTipoAuto().equals("oficial")) {
+                            payRepository.deleteById(idPago);
+                            stayRepository.deleteById(idEstancia);
+                        } else if (catalogo.getTipoAuto().equals("residente")) {
+                            pago.setMinutos((long) 0);
+                            pago.setPrecio(0.0);
+                            payRepository.save(pago);
+                        }
+                    }
                 }
+            } catch (Exception e) {
+                System.err.println("Error al actualizar el registro del auto: " + e.getMessage());
             }
+            
         });
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("success", true);

@@ -44,7 +44,7 @@ public class Pagos {
     }
 
     @ManyToOne
-    @JoinColumn(name = "tipo_vehiculo_id") // Nombre de la columna que será la clave foránea
+    @JoinColumn(name = "catalogo_vehiculo_id") // Nombre de la columna que será la clave foránea
     private Catalogo_Autos tipo_vehiculo;
     public void setTipo_vehiculo(Catalogo_Autos tipo_vehiculo) {
         this.tipo_vehiculo = tipo_vehiculo;

@@ -128,6 +128,14 @@ public class StayService {
                         pago.setPrecio(precio);
                         pago.setMinutos(sumaMinutos);
                         payRepository.save(pago);
+                    }else{
+                        Pagos payment = new Pagos();
+                        precio = duracionEnMinutos * 0.5;
+                        payment.setMinutos(duracionEnMinutos);
+                        payment.setPrecio(precio);
+                        payment.setEstancia(estancia);
+                        payment.setTipo_vehiculo(catalogo);
+                        payRepository.save(payment);
                     }
                 }else{
                     Pagos payment = new Pagos();

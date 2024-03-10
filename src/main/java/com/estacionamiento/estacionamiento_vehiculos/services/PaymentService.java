@@ -1,5 +1,7 @@
 package com.estacionamiento.estacionamiento_vehiculos.services;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.estacionamiento.estacionamiento_vehiculos.dto.PaymentDTO;
+import com.estacionamiento.estacionamiento_vehiculos.dto.ReportDTO;
 import com.estacionamiento.estacionamiento_vehiculos.models.Autos;
 import com.estacionamiento.estacionamiento_vehiculos.models.Catalogo_Autos;
 import com.estacionamiento.estacionamiento_vehiculos.models.Estancia;
@@ -56,6 +59,37 @@ public class PaymentService {
         pay.setTipo_vehiculo(catalogo);
         payRepository.save(pay);
          return ResponseEntity.status(HttpStatus.CREATED).body("{\"success\": true}");
+    }
+
+    public ResponseEntity<?> exportarDatos(ReportDTO report) {
+        try (FileWriter writer = new FileWriter(report.getNombreArchivo()+".txt")) {
+            // Escribir encabezado del archivo
+            writer.write("Placa\tMinutos\tPrecio\n");
+            List <Pagos> pagos = payRepository.findAll();
+            if(pagos != null){
+                pagos.stream().forEach(pago ->{
+                    Estancia estancia  = null;
+                    if(pago.getTipoAuto().equals("residente")){
+                        Long idEstancia = pago.getIdEstancia() != null ? pago.getIdEstancia() : 0 ;
+                        estancia = stayRepository.findById(idEstancia).get();
+                        if(estancia != null){
+                            String Placa = estancia.getPlaca();
+                            try {
+                                writer.write(Placa + "\t" + pago.getMinutos() + "\t" + pago.getPrecio() + "\n");
+                            } catch (IOException e) {
+                                System.err.println("ha ocurrido un error al escribir datos del pago: " + e.getMessage());
+                            }
+                        }
+                    }
+                } );
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).body("{\"success\": true}");
+           
+        } catch (IOException e) {
+            System.err.println("ha ocurrido un error al generar el reporte: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body("{\"success\": true}");
     }
     
 }

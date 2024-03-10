@@ -41,4 +41,9 @@ public class StayController {
         
     }
 
+    @GetMapping("/start-month")
+    public ResponseEntity<?> setStay(){
+        return stayService.startMonth();
+    }
+
 }

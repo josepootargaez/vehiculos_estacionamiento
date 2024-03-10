@@ -2,14 +2,18 @@ package com.estacionamiento.estacionamiento_vehiculos.dto;
 
 public class StayOutDTO {
     
-    Long estancia_id;
+    String placa;
 
-    public Long getEstancia_id() {
-        return estancia_id;
+    public String getPlaca() {
+        return placa;
     }
 
-    public void setEstancia_id(Long estancia_id) {
-        this.estancia_id = estancia_id;
+    public void setPlaca(String placa) {
+        this.placa = placa;
     }
+
+
+
+
 
 }

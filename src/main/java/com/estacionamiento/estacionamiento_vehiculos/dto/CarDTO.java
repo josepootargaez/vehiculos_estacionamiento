@@ -1,10 +1,11 @@
 package com.estacionamiento.estacionamiento_vehiculos.dto;
 
-import io.micrometer.common.lang.NonNull;
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class CarDTO {
-    @NonNull
+    @NotNull(message = "El campo placa_auto  no puede ser nulo")
+    @NotBlank(message = "El campo placa_auto no puede estar vacía")
     private String placa_auto;
     
     
@@ -17,8 +18,7 @@ public class CarDTO {
         this.placa_auto = placa_auto;
     }
 
-
-    @NonNull
+    @NotNull(message = "El campo catalogo_auto_id no puede ser nulo o vacio")
     private Long catalogo_auto_id;
 
 

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,14 +15,19 @@ import com.estacionamiento.estacionamiento_vehiculos.dto.StayDTO;
 import com.estacionamiento.estacionamiento_vehiculos.dto.StayOutDTO;
 import com.estacionamiento.estacionamiento_vehiculos.models.Estancia;
 import com.estacionamiento.estacionamiento_vehiculos.services.StayService;
+import com.estacionamiento.estacionamiento_vehiculos.services.ValidationErrorService;
+
+import jakarta.validation.Valid;
 
 @RestController
-@Validated
 @RequestMapping("/stay")
 public class StayController {
     
     @Autowired
     private StayService stayService;
+
+    @Autowired
+    private ValidationErrorService errorService;
 
     @GetMapping()
     public List<Estancia> getAllstays(){
@@ -30,13 +35,21 @@ public class StayController {
     }
 
     @PostMapping("/input")
-    public ResponseEntity<?> insertStay( @RequestBody StayDTO carDTO) {
+    public ResponseEntity<?> insertStay(@Valid @RequestBody StayDTO carDTO, BindingResult bindingResult) {
+        ResponseEntity<?> validationErrors = errorService.handleValidationErrors(bindingResult);
+        if (validationErrors != null) {
+            return validationErrors;
+        }
         return stayService.insertStay(carDTO);
         
     }
 
     @PostMapping("/output")
-    public ResponseEntity<?> insertOutPut( @RequestBody StayOutDTO carDTO) {
+    public ResponseEntity<?> insertOutPut( @Valid @RequestBody StayOutDTO carDTO, BindingResult bindingResult) {
+        ResponseEntity<?> validationErrors = errorService.handleValidationErrors(bindingResult);
+        if (validationErrors != null) {
+            return validationErrors;
+        }
         return stayService.insertOut(carDTO);
         
     }

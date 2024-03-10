@@ -1,6 +1,7 @@
 package com.estacionamiento.estacionamiento_vehiculos.models;
 
 
+import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +17,8 @@ public class Autos {
     public Long getId() {
         return id;
     }
+    
+     @NonNull
     private String  placa;
     
     

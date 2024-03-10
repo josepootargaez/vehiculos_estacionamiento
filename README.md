@@ -26,6 +26,9 @@ El proyecto sigue la estructura típica de un proyecto Spring Boot, con los sigu
 - `src/main/java`: Contiene el código fuente Java del proyecto.
 - `src/main/resources`: Contiene los recursos, como archivos de configuración.
 - `src/test`: Contiene las pruebas unitarias del proyecto.
+  
+## Herramientas
+Adjunto esta la colección de postman de los servicios, el nombre es `estacionamiento.postman_collection`
 
 ## Ejecución
 
